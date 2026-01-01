@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Веб-интерфейс для управления умными лампочками через Яндекс Умный Дом">
+    <title>Умные Лампочки - Управление</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <div id="login-page" class="page active">
+            <div class="login-card">
+                <div class="logo">
+                    <span class="icon">💡</span>
+                    <h1>Умные Лампочки</h1>
+                </div>
+                <p class="subtitle">Управление через Яндекс Умный Дом</p>
+                
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="client-id">Client ID</label>
+                        <input type="text" id="client-id" placeholder="Введите Client ID вашего приложения">
+                        <small>Получите на <a href="https://oauth.yandex.ru/client/new" target="_blank">oauth.yandex.ru</a></small>
+                    </div>
+                    
+                    <button id="login-btn" class="btn btn-primary">
+                        <span>Войти через Яндекс</span>
+                    </button>
+                    
+                    <div class="info-box">
+                        <h3>Как получить доступ:</h3>
+                        <ol>
+                            <li>Зарегистрируйте приложение на <a href="https://oauth.yandex.ru/client/new" target="_blank">OAuth Яндекс</a></li>
+                            <li>Выберите платформу "Веб-сервисы"</li>
+                            <li>Отметьте права: <code>iot:view</code> и <code>iot:control</code></li>
+                            <li>Скопируйте Client ID и вставьте выше</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-page" class="page">
+            <header class="dashboard-header">
+                <div class="header-content">
+                    <h1>💡 Управление лампочками</h1>
+                    <button id="logout-btn" class="btn btn-secondary">Выйти</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Загрузка устройств...</p>
+                </div>
+
+                <div id="devices-container" class="devices-grid"></div>
+
+                <div id="no-devices" class="no-devices hidden">
+                    <span class="icon">🔌</span>
+                    <h2>Устройства не найдены</h2>
+                    <p>Подключите устройства к Яндекс Умному Дому</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+

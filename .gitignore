@@ -1,0 +1,29 @@
+# Токены и секреты
+*.token
+*.key
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# JSON файлы с данными (опционально, раскомментируйте если не хотите коммитить)
+# devices.json
+
+# Временные файлы
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
