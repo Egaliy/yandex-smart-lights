@@ -10,48 +10,27 @@
 </head>
 <body>
     <div class="container">
-        <div id="login-page" class="page active">
+        <div id="login-page" class="page">
             <div class="login-card">
                 <div class="logo">
                     <span class="icon">💡</span>
                     <h1>Умные Лампочки</h1>
                 </div>
-                <p class="subtitle">Управление через Яндекс Умный Дом</p>
+                <p class="subtitle">Подключение...</p>
                 
                 <div class="login-form">
-                    <div class="form-group">
-                        <label for="client-id">Client ID</label>
-                        <input type="text" id="client-id" value="7389ae19172c4163aad94c25fe90143b" placeholder="Введите Client ID">
-                        <small>Client ID уже заполнен. Если нужно изменить - отредактируйте выше.</small>
+                    <div class="loading" style="padding: 40px;">
+                        <div class="spinner"></div>
+                        <p>Автоматическое подключение...</p>
                     </div>
 
-                    <div class="form-group">
-                        <label for="token-input">Или введите токен напрямую (опционально)</label>
+                    <div class="form-group" id="token-input-group" style="display: none;">
+                        <label for="token-input">Введите токен доступа</label>
                         <input type="text" id="token-input" placeholder="Вставьте токен доступа (access_token)">
-                        <small>Если у вас уже есть токен, вставьте его здесь</small>
-                    </div>
-                    
-                    <div class="button-group">
-                        <button id="activate-btn" class="btn btn-primary">
-                            <span>🔓 Активировать через Яндекс</span>
+                        <small>Если автоматическое подключение не сработало, введите токен вручную</small>
+                        <button id="token-login-btn" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                            <span>Подключиться</span>
                         </button>
-                        <button id="token-login-btn" class="btn btn-secondary" style="margin-top: 10px;">
-                            <span>Войти по токену</span>
-                        </button>
-                    </div>
-                    
-                    <div class="info-box">
-                        <h3>Два способа входа:</h3>
-                        <ol>
-                            <li><strong>Активировать через Яндекс</strong> - откроет страницу авторизации</li>
-                            <li><strong>Войти по токену</strong> - если у вас уже есть токен доступа</li>
-                        </ol>
-                        <p style="margin-top: 10px; font-size: 12px; color: #888;">
-                            ⚠️ <strong>Важно:</strong> В настройках OAuth приложения укажите Redirect URI: 
-                            <code id="redirect-uri-display">https://egaliy.github.io/yandex-smart-lights/</code>
-                            <br>
-                            <small style="color: #666;">(Или добавьте несколько URI для локальной разработки и продакшена)</small>
-                        </p>
                     </div>
                 </div>
             </div>

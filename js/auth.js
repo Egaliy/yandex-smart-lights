@@ -4,6 +4,9 @@ class AuthManager {
     constructor() {
         this.tokenKey = 'yandex_smart_home_token';
         this.clientIdKey = 'yandex_client_id';
+        // Ваши ключи
+        this.clientId = '7389ae19172c4163aad94c25fe90143b';
+        this.clientSecret = '07413685068e4c0fbefdcafc4686669b';
     }
 
     // Сохранение токена
@@ -38,24 +41,96 @@ class AuthManager {
         window.location.reload();
     }
 
-    // Авторизация через OAuth
-    async login(clientId) {
-        if (!clientId) {
-            throw new Error('Client ID не указан');
-        }
-
-        // Сохраняем Client ID
-        this.saveClientId(clientId);
-
-        // Формируем URL для авторизации
-        // Используем текущий URL страницы как redirect_uri (динамически)
-        // Это гарантирует, что redirect_uri всегда совпадает с текущим доменом
+    // Автоматическое получение токена через OAuth flow
+    async getTokenAutomatically() {
+        // Пробуем получить токен через authorization code flow
         const currentUrl = window.location.origin + window.location.pathname;
         const redirectUri = encodeURIComponent(currentUrl);
-        const authUrl = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
+        
+        // Используем невидимый iframe для получения authorization code
+        return new Promise((resolve, reject) => {
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${this.clientId}&redirect_uri=${redirectUri}`;
+            
+            const handleMessage = (event) => {
+                if (event.origin !== 'https://oauth.yandex.ru') return;
+                
+                if (event.data.code) {
+                    // Получаем токен по authorization code
+                    this.exchangeCodeForToken(event.data.code, redirectUri)
+                        .then(token => {
+                            document.body.removeChild(iframe);
+                            window.removeEventListener('message', handleMessage);
+                            resolve(token);
+                        })
+                        .catch(reject);
+                }
+            };
+            
+            window.addEventListener('message', handleMessage);
+            document.body.appendChild(iframe);
+            
+            // Таймаут на случай ошибки
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+                window.removeEventListener('message', handleMessage);
+                reject(new Error('Таймаут получения токена'));
+            }, 30000);
+        });
+    }
 
-        // Перенаправляем на страницу авторизации
-        window.location.href = authUrl;
+    // Обмен authorization code на токен
+    async exchangeCodeForToken(code, redirectUri) {
+        const response = await fetch('https://oauth.yandex.ru/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                grant_type: 'authorization_code',
+                code: code,
+                client_id: this.clientId,
+                client_secret: this.clientSecret,
+                redirect_uri: decodeURIComponent(redirectUri)
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Ошибка получения токена');
+        }
+
+        const data = await response.json();
+        const token = data.access_token;
+        
+        if (token) {
+            this.saveToken(token);
+            return token;
+        }
+        
+        throw new Error('Токен не получен');
+    }
+
+    // Автоматическое подключение
+    async autoConnect() {
+        // Сначала проверяем сохраненный токен
+        const savedToken = this.getToken();
+        if (savedToken) {
+            // Проверяем, что токен еще действителен
+            try {
+                const api = new YandexSmartHomeAPI(savedToken);
+                await api.getDevices();
+                return savedToken; // Токен валидный
+            } catch (e) {
+                // Токен недействителен, удаляем
+                localStorage.removeItem(this.tokenKey);
+            }
+        }
+
+        // Если токена нет или он недействителен, пробуем получить новый
+        // Но для этого нужен редирект, поэтому просто возвращаем null
+        // и показываем дашборд с возможностью ввода токена вручную
+        return null;
     }
 
     // Вход по токену напрямую

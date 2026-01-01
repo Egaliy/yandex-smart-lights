@@ -4,26 +4,26 @@ const auth = new AuthManager();
 let api = null;
 
 // Инициализация приложения
-document.addEventListener('DOMContentLoaded', () => {
-    // Показываем текущий redirect URI в интерфейсе
-    const redirectUriDisplay = document.getElementById('redirect-uri-display');
-    if (redirectUriDisplay) {
-        const currentUrl = window.location.origin + window.location.pathname;
-        redirectUriDisplay.textContent = currentUrl;
-    }
-
+document.addEventListener('DOMContentLoaded', async () => {
     // Проверяем OAuth callback (токен в URL)
     if (auth.handleOAuthCallback()) {
         showDashboard();
         return;
     }
 
-    // Проверяем авторизацию (сохраненный токен)
-    if (auth.isAuthenticated()) {
-        // Автоматически показываем дашборд если токен есть
-        showDashboard();
-    } else {
-        showLogin();
+    // Пробуем автоматическое подключение
+    try {
+        const token = await auth.autoConnect();
+        if (token) {
+            // Токен есть и валидный - показываем дашборд
+            showDashboard();
+        } else {
+            // Токена нет - показываем форму для ввода токена
+            showTokenInput();
+        }
+    } catch (error) {
+        console.error('Ошибка автоматического подключения:', error);
+        showTokenInput();
     }
 
     // Обработчики событий
@@ -32,12 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Настройка обработчиков событий
 function setupEventListeners() {
-    // Кнопка активации через Яндекс
-    const activateBtn = document.getElementById('activate-btn');
-    if (activateBtn) {
-        activateBtn.addEventListener('click', handleActivate);
-    }
-
     // Кнопка входа по токену
     const tokenLoginBtn = document.getElementById('token-login-btn');
     if (tokenLoginBtn) {
@@ -52,23 +46,8 @@ function setupEventListeners() {
         });
     }
 
-    // Enter в полях
-    const clientIdInput = document.getElementById('client-id');
+    // Enter в поле токена
     const tokenInput = document.getElementById('token-input');
-    
-    if (clientIdInput) {
-        const savedClientId = auth.getClientId();
-        if (savedClientId && !clientIdInput.value) {
-            clientIdInput.value = savedClientId;
-        }
-
-        clientIdInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleActivate();
-            }
-        });
-    }
-
     if (tokenInput) {
         tokenInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -78,24 +57,18 @@ function setupEventListeners() {
     }
 }
 
-// Обработка активации через Яндекс
-async function handleActivate() {
-    const clientId = document.getElementById('client-id').value.trim();
-    
-    if (!clientId) {
-        alert('Пожалуйста, введите Client ID');
-        return;
-    }
-
-    try {
-        await auth.login(clientId);
-    } catch (error) {
-        alert('Ошибка при активации: ' + error.message);
-    }
+// Показать форму ввода токена
+function showTokenInput() {
+    document.getElementById('login-page').classList.add('active');
+    document.getElementById('dashboard-page').classList.remove('active');
+    const loading = document.querySelector('#login-page .loading');
+    const tokenGroup = document.getElementById('token-input-group');
+    if (loading) loading.style.display = 'none';
+    if (tokenGroup) tokenGroup.style.display = 'block';
 }
 
 // Обработка входа по токену
-function handleTokenLogin() {
+async function handleTokenLogin() {
     const token = document.getElementById('token-input').value.trim();
     
     if (!token) {
@@ -105,6 +78,9 @@ function handleTokenLogin() {
 
     try {
         auth.loginWithToken(token);
+        // Проверяем, что токен работает
+        api = new YandexSmartHomeAPI(token);
+        await api.getDevices();
         showDashboard();
     } catch (error) {
         alert('Ошибка: ' + error.message);
