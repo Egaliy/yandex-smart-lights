@@ -5,6 +5,13 @@ let api = null;
 
 // Инициализация приложения
 document.addEventListener('DOMContentLoaded', () => {
+    // Показываем текущий redirect URI в интерфейсе
+    const redirectUriDisplay = document.getElementById('redirect-uri-display');
+    if (redirectUriDisplay) {
+        const currentUrl = window.location.origin + window.location.pathname;
+        redirectUriDisplay.textContent = currentUrl;
+    }
+
     // Проверяем OAuth callback (токен в URL)
     if (auth.handleOAuthCallback()) {
         showDashboard();
