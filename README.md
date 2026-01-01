@@ -8,15 +8,15 @@
 
 После настройки GitHub Pages приложение будет доступно по адресу:
 ```
-https://ваш-username.github.io/умные-лампочки/
+https://egaliy.github.io/yandex-smart-lights/
 ```
 
 ### Локальный запуск
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/ваш-username/умные-лампочки.git
-cd умные-лампочки
+git clone https://github.com/Egaliy/yandex-smart-lights.git
+cd yandex-smart-lights
 ```
 
 2. Откройте `index.html` в браузере или используйте локальный сервер:
@@ -54,7 +54,7 @@ npx serve
 При создании OAuth приложения на [oauth.yandex.ru](https://oauth.yandex.ru/client/new):
 
 1. **Redirect URI** должен быть:
-   - Для GitHub Pages: `https://ваш-username.github.io/умные-лампочки/`
+   - Для GitHub Pages: `https://egaliy.github.io/yandex-smart-lights/`
    - Для локальной разработки: `http://localhost:8000/` или `http://127.0.0.1:8000/`
 
 2. Можно добавить несколько Redirect URI (для локальной разработки и продакшена)

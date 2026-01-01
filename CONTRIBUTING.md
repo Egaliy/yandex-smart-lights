@@ -7,7 +7,7 @@
    - **Название**: Умные лампочки (или любое другое)
    - **Платформа**: Веб-сервисы
    - **Redirect URI**: 
-     - Для GitHub Pages: `https://ваш-username.github.io/умные-лампочки/`
+     - Для GitHub Pages: `https://egaliy.github.io/yandex-smart-lights/`
      - Для локальной разработки: `http://localhost:8000/`
 3. В разделе **Доступ к данным** отметьте:
    - `iot:view`

@@ -6,7 +6,7 @@
 2. Заполните:
    - Название: `Умные лампочки`
    - Платформа: `Веб-сервисы`
-   - Redirect URI: `https://ваш-username.github.io/умные-лампочки/` (после деплоя)
+   - Redirect URI: `https://egaliy.github.io/yandex-smart-lights/` (после деплоя)
 3. Отметьте права: `iot:view` и `iot:control`
 4. Сохраните **Client ID**
 
@@ -16,7 +16,7 @@
 git init
 git add .
 git commit -m "Initial commit"
-git remote add origin https://github.com/ваш-username/умные-лампочки.git
+git remote add origin https://github.com/Egaliy/yandex-smart-lights.git
 git push -u origin main
 ```
 
@@ -30,7 +30,7 @@ git push -u origin main
 
 После деплоя обновите Redirect URI в OAuth приложении на:
 ```
-https://ваш-username.github.io/умные-лампочки/
+https://egaliy.github.io/yandex-smart-lights/
 ```
 
 ## 5. Готово! 🎉

@@ -4,7 +4,7 @@
 
 1. Перейдите на https://github.com/new
 2. Создайте новый репозиторий:
-   - **Repository name**: `умные-лампочки` (или любое другое название)
+   - **Repository name**: `yandex-smart-lights` (или любое другое название)
    - **Visibility**: Public (для бесплатного GitHub Pages) или Private
    - **НЕ** добавляйте README, .gitignore или лицензию (они уже есть)
 
@@ -21,7 +21,7 @@ git add .
 git commit -m "Initial commit: Веб-интерфейс для управления умными лампочками"
 
 # Добавление remote репозитория (замените на ваш URL)
-git remote add origin https://github.com/ваш-username/умные-лампочки.git
+git remote add origin https://github.com/Egaliy/yandex-smart-lights.git
 
 # Отправка кода
 git branch -M main
@@ -46,7 +46,7 @@ git push -u origin main
 3. Нажмите **Save**
 4. Через несколько минут приложение будет доступно по адресу:
    ```
-   https://ваш-username.github.io/умные-лампочки/
+   https://egaliy.github.io/yandex-smart-lights/
    ```
 
 ## Шаг 4: Настройка OAuth приложения
@@ -57,13 +57,13 @@ git push -u origin main
 2. Откройте ваше приложение
 3. Добавьте Redirect URI:
    ```
-   https://ваш-username.github.io/умные-лампочки/
+   https://egaliy.github.io/yandex-smart-lights/
    ```
 4. Сохраните изменения
 
 ## Шаг 5: Проверка работы
 
-1. Откройте ваш сайт: `https://ваш-username.github.io/умные-лампочки/`
+1. Откройте ваш сайт: `https://egaliy.github.io/yandex-smart-lights/`
 2. Введите Client ID
 3. Нажмите "Войти через Яндекс"
 4. Авторизуйтесь
