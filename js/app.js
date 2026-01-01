@@ -5,14 +5,15 @@ let api = null;
 
 // Инициализация приложения
 document.addEventListener('DOMContentLoaded', () => {
-    // Проверяем OAuth callback
+    // Проверяем OAuth callback (токен в URL)
     if (auth.handleOAuthCallback()) {
         showDashboard();
         return;
     }
 
-    // Проверяем авторизацию
+    // Проверяем авторизацию (сохраненный токен)
     if (auth.isAuthenticated()) {
+        // Автоматически показываем дашборд если токен есть
         showDashboard();
     } else {
         showLogin();
