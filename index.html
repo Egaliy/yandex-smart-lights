@@ -21,22 +21,35 @@
                 <div class="login-form">
                     <div class="form-group">
                         <label for="client-id">Client ID</label>
-                        <input type="text" id="client-id" placeholder="Введите Client ID вашего приложения">
-                        <small>Получите на <a href="https://oauth.yandex.ru/client/new" target="_blank">oauth.yandex.ru</a></small>
+                        <input type="text" id="client-id" value="7389ae19172c4163aad94c25fe90143b" placeholder="Введите Client ID">
+                        <small>Client ID уже заполнен. Если нужно изменить - отредактируйте выше.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="token-input">Или введите токен напрямую (опционально)</label>
+                        <input type="text" id="token-input" placeholder="Вставьте токен доступа (access_token)">
+                        <small>Если у вас уже есть токен, вставьте его здесь</small>
                     </div>
                     
-                    <button id="login-btn" class="btn btn-primary">
-                        <span>Войти через Яндекс</span>
-                    </button>
+                    <div class="button-group">
+                        <button id="activate-btn" class="btn btn-primary">
+                            <span>🔓 Активировать через Яндекс</span>
+                        </button>
+                        <button id="token-login-btn" class="btn btn-secondary" style="margin-top: 10px;">
+                            <span>Войти по токену</span>
+                        </button>
+                    </div>
                     
                     <div class="info-box">
-                        <h3>Как получить доступ:</h3>
+                        <h3>Два способа входа:</h3>
                         <ol>
-                            <li>Зарегистрируйте приложение на <a href="https://oauth.yandex.ru/client/new" target="_blank">OAuth Яндекс</a></li>
-                            <li>Выберите платформу "Веб-сервисы"</li>
-                            <li>Отметьте права: <code>iot:view</code> и <code>iot:control</code></li>
-                            <li>Скопируйте Client ID и вставьте выше</li>
+                            <li><strong>Активировать через Яндекс</strong> - откроет страницу авторизации</li>
+                            <li><strong>Войти по токену</strong> - если у вас уже есть токен доступа</li>
                         </ol>
+                        <p style="margin-top: 10px; font-size: 12px; color: #888;">
+                            ⚠️ Убедитесь, что в настройках OAuth приложения указан правильный Redirect URI: 
+                            <code>https://egaliy.github.io/yandex-smart-lights/</code>
+                        </p>
                     </div>
                 </div>
             </div>

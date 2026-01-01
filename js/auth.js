@@ -48,12 +48,21 @@ class AuthManager {
         this.saveClientId(clientId);
 
         // Формируем URL для авторизации
-        // Используем текущий URL как redirect_uri
-        const redirectUri = encodeURIComponent(window.location.origin + window.location.pathname);
+        // Используем правильный redirect_uri для GitHub Pages
+        const redirectUri = encodeURIComponent('https://egaliy.github.io/yandex-smart-lights/');
         const authUrl = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}`;
 
         // Перенаправляем на страницу авторизации
         window.location.href = authUrl;
+    }
+
+    // Вход по токену напрямую
+    loginWithToken(token) {
+        if (!token || !token.trim()) {
+            throw new Error('Токен не указан');
+        }
+        this.saveToken(token.trim());
+        return true;
     }
 
     // Обработка ответа OAuth (токен в URL)

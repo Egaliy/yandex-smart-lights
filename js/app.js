@@ -24,10 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Настройка обработчиков событий
 function setupEventListeners() {
-    // Кнопка входа
-    const loginBtn = document.getElementById('login-btn');
-    if (loginBtn) {
-        loginBtn.addEventListener('click', handleLogin);
+    // Кнопка активации через Яндекс
+    const activateBtn = document.getElementById('activate-btn');
+    if (activateBtn) {
+        activateBtn.addEventListener('click', handleActivate);
+    }
+
+    // Кнопка входа по токену
+    const tokenLoginBtn = document.getElementById('token-login-btn');
+    if (tokenLoginBtn) {
+        tokenLoginBtn.addEventListener('click', handleTokenLogin);
     }
 
     // Кнопка выхода
@@ -38,24 +44,34 @@ function setupEventListeners() {
         });
     }
 
-    // Enter в поле Client ID
+    // Enter в полях
     const clientIdInput = document.getElementById('client-id');
+    const tokenInput = document.getElementById('token-input');
+    
     if (clientIdInput) {
         const savedClientId = auth.getClientId();
-        if (savedClientId) {
+        if (savedClientId && !clientIdInput.value) {
             clientIdInput.value = savedClientId;
         }
 
         clientIdInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                handleLogin();
+                handleActivate();
+            }
+        });
+    }
+
+    if (tokenInput) {
+        tokenInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleTokenLogin();
             }
         });
     }
 }
 
-// Обработка входа
-async function handleLogin() {
+// Обработка активации через Яндекс
+async function handleActivate() {
     const clientId = document.getElementById('client-id').value.trim();
     
     if (!clientId) {
@@ -66,7 +82,24 @@ async function handleLogin() {
     try {
         await auth.login(clientId);
     } catch (error) {
-        alert('Ошибка при входе: ' + error.message);
+        alert('Ошибка при активации: ' + error.message);
+    }
+}
+
+// Обработка входа по токену
+function handleTokenLogin() {
+    const token = document.getElementById('token-input').value.trim();
+    
+    if (!token) {
+        alert('Пожалуйста, введите токен доступа');
+        return;
+    }
+
+    try {
+        auth.loginWithToken(token);
+        showDashboard();
+    } catch (error) {
+        alert('Ошибка: ' + error.message);
     }
 }
 
